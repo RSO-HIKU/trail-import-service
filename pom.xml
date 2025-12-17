@@ -14,7 +14,47 @@
     <packaging>jar</packaging>
 
     <dependencies>
-            <!-- KumuluzEE core and desired components -->
+
+        <!-- JPA API -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+        </dependency>
+
+        <!-- Hibernate ORM -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <!-- Hibernate Spatial (PostGIS support) -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-spatial</artifactId>
+        </dependency>
+
+        <!-- JTS Geometry (Point, LineString) -->
+        <dependency>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>1.18.2</version>
+        </dependency>
+
+        <!-- PostgreSQL JDBC driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
+        </dependency>
+
+        <!-- Shared models (Trail, Peak) -->
+        <dependency>
+            <groupId>com.hiku</groupId>
+            <artifactId>hiku-models</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- KumuluzEE core -->
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
@@ -50,12 +90,11 @@
             <artifactId>kumuluzee-servlet-jetty</artifactId>
         </dependency>
 
-        <!-- Jersey multipart for @FormDataParam support -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
-            <version>2.35</version>
-        </dependency>
+            <version>2.34</version>
+        </dependency> -->
     </dependencies>
 
     <build>
