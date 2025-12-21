@@ -2,54 +2,73 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>com.hiku</groupId>
-        <artifactId>Hiku</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../../../pom.xml</relativePath>
-    </parent>
-
+    <groupId>com.hiku</groupId>
     <artifactId>trail-import-service</artifactId>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
+        <kumuluzee.version>4.1.0</kumuluzee.version>
+    </properties>
+
     <dependencies>
-            <!-- KumuluzEE core and desired components -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.6.15.Final</version>
+        </dependency>
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
+            <version>${kumuluzee.version}</version>
         </dependency>
 
         <!-- JAX-RS for REST endpoints -->
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
+            <version>${kumuluzee.version}</version>
         </dependency>
 
         <!-- CDI for dependency injection -->
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-cdi-weld</artifactId>
+            <version>${kumuluzee.version}</version>
         </dependency>
 
         <!-- JSON-B for JSON binding -->
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-json-b-yasson</artifactId>
+            <version>${kumuluzee.version}</version>
         </dependency>
 
         <!-- JSON-P for JSON processing -->
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-json-p-jsonp</artifactId>
+            <version>${kumuluzee.version}</version>
         </dependency>
 
         <!-- Jetty servlet -->
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-servlet-jetty</artifactId>
+            <version>${kumuluzee.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version> <!-- or the latest stable version -->
+        </dependency>
         <!-- Jersey multipart for @FormDataParam support -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
@@ -60,7 +79,14 @@
 
     <build>
         <plugins>
-            <!-- Package as an executable fat JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.kumuluz.ee</groupId>
                 <artifactId>kumuluzee-maven-plugin</artifactId>
@@ -73,6 +99,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>com.hiku.trailImportService.util.SchemaGenerator</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: trail-import-service
+  tag: dev-latest
+  pullPolicy: Never
+
+service:
+  clusterIP:
+    port: 8084
+
+  nodePort:
+    port: 8084
+    nodePort: 30084
