@@ -1,6 +1,6 @@
 apiVersion: v2
-name: user-service
-description: User service chart
+name: trail-import-service
+description: Trail import service chart
 
 type: application
 

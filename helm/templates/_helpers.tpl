@@ -1,14 +1,14 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "user-service.name" -}}
+{{- define "trail-import-service.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Create a default fully qualified app name.
 */}}
-{{- define "user-service.fullname" -}}
+{{- define "trail-import-service.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -24,9 +24,9 @@ Create a default fully qualified app name.
 {{/*
 Common labels
 */}}
-{{- define "user-service.labels" -}}
+{{- define "trail-import-service.labels" -}}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{ include "user-service.selectorLabels" . }}
+{{ include "trail-import-service.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -36,7 +36,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "user-service.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "user-service.name" . }}
+{{- define "trail-import-service.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "trail-import-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
