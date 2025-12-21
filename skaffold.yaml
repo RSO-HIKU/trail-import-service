@@ -1,0 +1,37 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: trail-import-service
+build:
+  local:
+    push: false
+  tagPolicy:
+    sha256: {}
+  artifacts:
+    - image: trail-import-service
+      context: .
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  helm:
+    releases:
+      - name: trail-import-service
+        chartPath: helm
+        namespace: dev
+        createNamespace: true
+        valuesFiles:
+          - helm/values-dev.yaml
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_trail_import_service}}"
+          image.tag: "{{.IMAGE_TAG_trail_import_service}}"
+        wait: true
+portForward:
+  - resourceType: service
+    resourceName: trail-import-service-nodeport
+    namespace: dev
+    port: 8084
+    localPort: 8084
+profiles:
+  - name: minikube
+    activation:
+      - kubeContext: minikube
