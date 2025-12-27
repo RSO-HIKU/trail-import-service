@@ -64,6 +64,14 @@
             <artifactId>kumuluzee-servlet-jetty</artifactId>
             <version>${kumuluzee.version}</version>
         </dependency>
+        
+        <!-- Jersey multipart for file upload support -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.35</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -71,9 +79,19 @@
         </dependency>
         <!-- Jersey multipart for @FormDataParam support -->
         <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-multipart</artifactId>
-            <version>2.35</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-spatial</artifactId>
+            <version>5.6.15.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>1.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-jpa-hibernate</artifactId>
+            <version>${kumuluzee.version}</version>
         </dependency>
     </dependencies>
 
