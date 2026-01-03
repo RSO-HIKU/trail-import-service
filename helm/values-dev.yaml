@@ -1,5 +1,15 @@
 replicaCount: 1
 
+database:
+  enabled: true
+  host: postgres.database.svc.cluster.local
+  port: "5432"
+  name: hikudb
+  schema: badge_service
+
+azure:
+  enabled: false
+
 image:
   repository: trail-import-service
   tag: dev-latest
@@ -10,5 +20,10 @@ service:
     port: 8084
 
   nodePort:
+    enabled: true
     port: 8084
     nodePort: 30084
+
+jwtAuth:
+  issuer: "http://localhost:8080/auth/realms/hiku-dev"
+  jwksUri: "http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/hiku-dev/protocol/openid-connect/certs"
