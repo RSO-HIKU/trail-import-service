@@ -8,8 +8,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import java.io.*;
 
-import com.hiku.trailImport.db.dao.TrailImportDao;
-import com.hiku.trailImport.util.GpxToWkt;
+import com.hiku.trailImport.service.GpxImportService;
 
 
 @Path("/importGPX")
@@ -17,42 +16,20 @@ import com.hiku.trailImport.util.GpxToWkt;
 public class ImportGPX {
     
     @Inject
-    private TrailImportDao trailImportDao;
+    private GpxImportService gpxImportService;
 
     // Raw body upload: filename from X-Filename header or Content-Disposition
     @POST
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, "application/gpx+xml", MediaType.WILDCARD})
     public Response importGPXRaw(InputStream body, @Context HttpHeaders headers) {
         try {
-            String fileName = headers.getHeaderString("X-Filename");
-            if (fileName == null || fileName.isBlank()) {
-                fileName = headers.getHeaderString("Content-Disposition");
-                if (fileName != null && fileName.contains("filename=")) {
-                    fileName = fileName.substring(fileName.indexOf("filename=") + 9)
-                                       .replaceAll("\"", "")
-                                       .trim();
-                }
-            }
-            
-            if (fileName == null || fileName.isBlank()) {
-                fileName = "uploaded.gpx";
-            } else if (!fileName.toLowerCase().endsWith(".gpx")) {
-                fileName = fileName + ".gpx";
-            }
-
-            GpxToWkt.Result res = GpxToWkt.convert(body, fileName);
-
-            Long id = trailImportDao.insertTrailNative(
-                res.name,
-                res.lengthKm,
-                res.wktLineString,
-                fileName
-            );
-
-            String idStr = (id != null) ? String.valueOf(id) : "null";
+            GpxImportService.ImportResult result = gpxImportService.importGpx(body, headers);
+            String idStr = (result.id != null) ? String.valueOf(result.id) : "null";
+            String safeName = result.name != null ? result.name.replace("\"", "'") : "";
+            String safeFile = result.sourceFile != null ? result.sourceFile.replace("\"", "'") : "";
             return Response.ok()
                     .entity("{\"success\":true,\"trailId\":" + idStr + 
-                           ",\"name\":\"" + res.name.replace("\"", "'") + "\",\"sourceFile\":\"" + fileName + "\"}")
+                           ",\"name\":\"" + safeName + "\",\"sourceFile\":\"" + safeFile + "\"}")
                     .build();
 
         } catch (Exception e) {
