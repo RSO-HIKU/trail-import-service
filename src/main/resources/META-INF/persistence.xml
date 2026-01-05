@@ -9,9 +9,6 @@
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://postgres.database.svc.cluster.local:5432/hikudb"/>
-            <property name="javax.persistence.jdbc.user" value="hikuuser"/>
-            <property name="javax.persistence.jdbc.password" value="hikupassword"/>
             <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
