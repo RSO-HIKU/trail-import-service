@@ -37,7 +37,7 @@ spec:
               export KUMULUZEE_JWT_AUTH_JWKS_URI="{{ .Values.jwtAuth.jwksUri }}"
 
               # Run the Java application
-              exec java -jar /app/badge-service.jar
+              exec java -jar /app/trail-import-service.jar
           {{- end }}
           env:
             - name: KUMULUZEE_ENV_NAME
