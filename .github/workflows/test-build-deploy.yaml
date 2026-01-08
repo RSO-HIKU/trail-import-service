@@ -1,0 +1,67 @@
+name: Build & Deploy to TEST (GitOps)
+
+on:
+  push:
+    branches: ["test"]
+
+jobs:
+  build_push_update_gitops:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout trail-import-service repo
+        uses: actions/checkout@v4
+
+      - name: Compute tag
+        id: meta
+        run: |
+          echo "TAG=sha-${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          echo "SVC_REPO=${{ secrets.ACR_LOGIN_SERVER_TEST }}/trail-import-service" >> $GITHUB_OUTPUT
+          echo "MIG_REPO=${{ secrets.ACR_LOGIN_SERVER_TEST }}/trail-import-service-migrator" >> $GITHUB_OUTPUT
+
+      - name: Login to TEST ACR
+        run: |
+          echo "${{ secrets.ACR_PASSWORD_TEST }}" | docker login "${{ secrets.ACR_LOGIN_SERVER_TEST }}" \
+            -u "${{ secrets.ACR_USERNAME_TEST }}" --password-stdin
+
+      - name: Build & push service image
+        run: |
+          docker build -f Dockerfile -t "${{ steps.meta.outputs.SVC_REPO }}:${{ steps.meta.outputs.TAG }}" .
+          docker push "${{ steps.meta.outputs.SVC_REPO }}:${{ steps.meta.outputs.TAG }}"
+
+      - name: Build & push migrator image
+        run: |
+          docker build -f Dockerfile.migrator -t "${{ steps.meta.outputs.MIG_REPO }}:${{ steps.meta.outputs.TAG }}" .
+          docker push "${{ steps.meta.outputs.MIG_REPO }}:${{ steps.meta.outputs.TAG }}"
+
+      - name: Checkout deploy repo (test branch)
+        uses: actions/checkout@v4
+        with:
+          repository: RSO-HIKU/deploy
+          token: ${{ secrets.DEPLOY_REPO_PAT }}
+          ref: test
+          path: deploy-repo
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Update TEST values
+        run: |
+          FILE="deploy-repo/values/test/services/trail-import-service.yaml"
+
+          yq -i '.image.repository = "${{ steps.meta.outputs.SVC_REPO }}"' "$FILE"
+          yq -i '.image.tag = "${{ steps.meta.outputs.TAG }}"' "$FILE"
+
+          yq -i '.flyway.image.repository = "${{ steps.meta.outputs.MIG_REPO }}"' "$FILE"
+          yq -i '.flyway.image.tag = "${{ steps.meta.outputs.TAG }}"' "$FILE"
+
+      - name: Commit & push
+        run: |
+          cd deploy-repo
+          git config user.name "ci-bot"
+          git config user.email "ci-bot@users.noreply.github.com"
+          git add values/test/services/trail-import-service.yaml
+          git commit -m "test: trail-import-service -> ${{ steps.meta.outputs.TAG }}" || exit 0
+          git push origin test

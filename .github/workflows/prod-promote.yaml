@@ -1,0 +1,79 @@
+name: Promote to PROD (GitOps)
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha_tag:
+        description: "Tag to promote (e.g. sha-<commit>)"
+        required: true
+
+jobs:
+  promote_and_update_gitops:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set tag
+        id: vars
+        run: |
+          echo "TAG=${{ inputs.sha_tag }}" >> $GITHUB_OUTPUT
+
+      - name: Login to TEST ACR
+        run: |
+          echo "${{ secrets.ACR_PASSWORD_TEST }}" | docker login "${{ secrets.ACR_LOGIN_SERVER_TEST }}" \
+            -u "${{ secrets.ACR_USERNAME_TEST }}" --password-stdin
+
+      - name: Login to PROD ACR
+        run: |
+          echo "${{ secrets.ACR_PASSWORD_PROD }}" | docker login "${{ secrets.ACR_LOGIN_SERVER_PROD }}" \
+            -u "${{ secrets.ACR_USERNAME_PROD }}" --password-stdin
+
+      - name: Promote images TEST -> PROD
+        run: |
+          TAG="${{ steps.vars.outputs.TAG }}"
+
+          SRC_SVC="${{ secrets.ACR_LOGIN_SERVER_TEST }}/trail-import-service:${TAG}"
+          SRC_MIG="${{ secrets.ACR_LOGIN_SERVER_TEST }}/trail-import-service-migrator:${TAG}"
+
+          DST_SVC="${{ secrets.ACR_LOGIN_SERVER_PROD }}/trail-import-service:${TAG}"
+          DST_MIG="${{ secrets.ACR_LOGIN_SERVER_PROD }}/trail-import-service-migrator:${TAG}"
+
+          docker pull "$SRC_SVC"
+          docker tag  "$SRC_SVC" "$DST_SVC"
+          docker push "$DST_SVC"
+
+          docker pull "$SRC_MIG"
+          docker tag  "$SRC_MIG" "$DST_MIG"
+          docker push "$DST_MIG"
+
+      - name: Checkout deploy repo (prod branch)
+        uses: actions/checkout@v4
+        with:
+          repository: RSO-HIKU/deploy
+          token: ${{ secrets.DEPLOY_REPO_PAT }}
+          ref: prod
+          path: deploy-repo
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Update PROD values
+        run: |
+          FILE="deploy-repo/values/prod/services/trail-import-service.yaml"
+          TAG="${{ steps.vars.outputs.TAG }}"
+
+          yq -i '.image.repository = "${{ secrets.ACR_LOGIN_SERVER_PROD }}/trail-import-service"' "$FILE"
+          yq -i '.image.tag = strenv(TAG)' "$FILE"
+
+          yq -i '.flyway.image.repository = "${{ secrets.ACR_LOGIN_SERVER_PROD }}/trail-import-service-migrator"' "$FILE"
+          yq -i '.flyway.image.tag = strenv(TAG)' "$FILE"
+
+      - name: Commit & push
+        run: |
+          cd deploy-repo
+          git config user.name "ci-bot"
+          git config user.email "ci-bot@users.noreply.github.com"
+          git add values/prod/services/trail-import-service.yaml
+          git commit -m "prod: trail-import-service -> ${{ steps.vars.outputs.TAG }}" || exit 0
+          git push origin prod

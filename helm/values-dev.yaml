@@ -12,6 +12,9 @@ database:
 azure:
   enabled: false
 
+gitops:
+  enabled: false
+
 image:
   repository: trail-import-service
   tag: dev-latest

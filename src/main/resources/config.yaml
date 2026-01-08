@@ -2,15 +2,15 @@ kumuluzee:
   name: trail-import-service
   version: 1.0.0
   env:
-    name: {{ KUMULUZEE_ENV_NAME:dev }}
+    name: ${KUMULUZEE_ENV_NAME:dev}
   server:
     http:
-      port: {{ KUMULUZEE_SERVER_HTTP_PORT:8084 }}
-      address: {{ KUMULUZEE_SERVER_HTTP_ADDRESS:0.0.0.0 }}
+      port: ${KUMULUZEE_SERVER_HTTP_PORT:8084}
+      address: ${KUMULUZEE_SERVER_HTTP_ADDRESS:0.0.0.0}
   datasources:
-    default:
-      connectionUrl: ${KUMULUZEE_DATASOURCES_DEFAULT_CONNECTIONURL:jdbc:postgresql://localhost:5432/hikudb}
-      user: ${KUMULUZEE_DATASOURCES_DEFAULT_USERNAME:hikuuser}
+    - jndi-name: jdbc/HikuDS
+      connection-url: ${KUMULUZEE_DATASOURCES_DEFAULT_CONNECTIONURL:jdbc:postgresql://localhost:5432/hikudb}
+      username: ${KUMULUZEE_DATASOURCES_DEFAULT_USERNAME}
       password: ${KUMULUZEE_DATASOURCES_DEFAULT_PASSWORD:hikupassword}
   jwt-auth:
     issuer: ${KUMULUZEE_JWT_AUTH_ISSUER}
