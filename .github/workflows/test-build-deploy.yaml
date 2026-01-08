@@ -17,7 +17,6 @@ jobs:
         run: |
           echo "TAG=sha-${GITHUB_SHA}" >> $GITHUB_OUTPUT
           echo "SVC_REPO=${{ secrets.ACR_LOGIN_SERVER_TEST }}/trail-import-service" >> $GITHUB_OUTPUT
-          echo "MIG_REPO=${{ secrets.ACR_LOGIN_SERVER_TEST }}/trail-import-service-migrator" >> $GITHUB_OUTPUT
 
       - name: Login to TEST ACR
         run: |
@@ -28,11 +27,6 @@ jobs:
         run: |
           docker build -f Dockerfile -t "${{ steps.meta.outputs.SVC_REPO }}:${{ steps.meta.outputs.TAG }}" .
           docker push "${{ steps.meta.outputs.SVC_REPO }}:${{ steps.meta.outputs.TAG }}"
-
-      - name: Build & push migrator image
-        run: |
-          docker build -f Dockerfile.migrator -t "${{ steps.meta.outputs.MIG_REPO }}:${{ steps.meta.outputs.TAG }}" .
-          docker push "${{ steps.meta.outputs.MIG_REPO }}:${{ steps.meta.outputs.TAG }}"
 
       - name: Checkout deploy repo (test branch)
         uses: actions/checkout@v4
@@ -53,9 +47,6 @@ jobs:
 
           yq -i '.image.repository = "${{ steps.meta.outputs.SVC_REPO }}"' "$FILE"
           yq -i '.image.tag = "${{ steps.meta.outputs.TAG }}"' "$FILE"
-
-          yq -i '.flyway.image.repository = "${{ steps.meta.outputs.MIG_REPO }}"' "$FILE"
-          yq -i '.flyway.image.tag = "${{ steps.meta.outputs.TAG }}"' "$FILE"
 
       - name: Commit & push
         run: |
