@@ -5,6 +5,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "trail-import-service.labels" . | nindent 4 }}
+  {{- if .Values.gitops.enabled }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -26,7 +30,7 @@ spec:
             - sh
             - -c
             - |
-              set -euo pipefail
+              set -eu
               
               # JWT Auth (Keycloak / OIDC)
               export KUMULUZEE_JWT_AUTH_ISSUER="{{ .Values.jwtAuth.issuer }}"
