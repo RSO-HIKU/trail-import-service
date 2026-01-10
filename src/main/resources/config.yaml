@@ -12,6 +12,9 @@ kumuluzee:
   #     connection-url: ${KUMULUZEE_DATASOURCES_DEFAULT_CONNECTIONURL:jdbc:postgresql://localhost:5432/hikudb}
   #     username: ${KUMULUZEE_DATASOURCES_DEFAULT_USERNAME}
   #     password: ${KUMULUZEE_DATASOURCES_DEFAULT_PASSWORD:hikupassword}
+      # pool:  
+      #   min-size: 1
+      #   max-size: 3
   jwt-auth:
     issuer: ${KUMULUZEE_JWT_AUTH_ISSUER}
     jwks-uri: ${KUMULUZEE_JWT_AUTH_JWKS_URI}
