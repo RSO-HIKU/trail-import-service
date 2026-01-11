@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "07d82acc-aea5-480b-a314-bcddd2ada9aa",
+		"name": "HIKU",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40015610",
+		"_collection_link": "https://hiku99.postman.co/workspace/HIKU~a6a05134-9dee-4d54-81a0-4bc7685fcc34/collection/40015610-07d82acc-aea5-480b-a314-bcddd2ada9aa?action=share&source=collection_link&creator=40015610"
+	},
+	"item": [
+		{
+			"name": "Trail Import Service",
+			"item": [
+				{
+					"name": "insert peak 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Blegoš\",\r\n  \"territory\": \"Škofjeloško\",\r\n  \"coordinates\": \"46.164833, 14.113502\",\r\n  \"elevation_m\": 1562\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/trail-import/peak",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"trail-import",
+								"peak"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send .gpx file as binary 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							},
+							{
+								"key": "X-Filename",
+								"value": "Poljane - Lubnik.gpx",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "8oylflLBT/Poljane - Lubnik.gpx"
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/trail-import/importGPX",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"trail-import",
+								"importGPX"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "accessToken",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXVmo4V3U3SEtpLXBaZ25ibGh2M2EzaWFfWVlMd1k4SEVKZlM2UXVEa3ZNIn0.eyJleHAiOjE3NjgxNTE3MjksImlhdCI6MTc2ODE1MTQyOSwiYXV0aF90aW1lIjoxNzY4MTUwOTE2LCJqdGkiOiJmNDViZGEzYS1lMGM1LTQwN2MtYjFlMC1kMmRlNzk2MTViMzgiLCJpc3MiOiJodHRwczovL3RyYWVmaWstaGlrdS10ZXN0LnBvbGFuZGNlbnRyYWwuY2xvdWRhcHAuYXp1cmUuY29tL2F1dGgvcmVhbG1zL2hpa3UtdGVzdCIsImF1ZCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYWNjb3VudCJdLCJzdWIiOiI2ODk1YTBmOS04Y2VlLTRlM2ItYjI0Ni1hYTYwYjgyMTcxOGQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJoaWt1LXdlYiIsInNpZCI6ImRkOTU0MzMyLTZjNjAtNGUxMS05ZjY4LTg2MmY5ZjZkODZmZSIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9zdHdlYmhpa3V0ZXN0cGxjLnozNi53ZWIuY29yZS53aW5kb3dzLm5ldCIsImh0dHBzOi8vb2F1dGgucHN0bW4uaW8iLCIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1oaWt1LWRldiIsIm9mZmxpbmVfYWNjZXNzIiwiYWRtaW4iLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctcmVhbG0iLCJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwicmVhbG0tYWRtaW4iLCJjcmVhdGUtY2xpZW50IiwibWFuYWdlLXVzZXJzIiwicXVlcnktcmVhbG1zIiwidmlldy1hdXRob3JpemF0aW9uIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LXVzZXJzIiwibWFuYWdlLWV2ZW50cyIsIm1hbmFnZS1yZWFsbSIsInZpZXctZXZlbnRzIiwidmlldy11c2VycyIsInZpZXctY2xpZW50cyIsIm1hbmFnZS1hdXRob3JpemF0aW9uIiwibWFuYWdlLWNsaWVudHMiLCJxdWVyeS1ncm91cHMiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCBtaWNyb3Byb2ZpbGUtand0IiwidXBuIjoidGVzdGFkbWluIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJ0ZXN0IGFkbWluIiwiZ3JvdXBzIjpbImRlZmF1bHQtcm9sZXMtaGlrdS1kZXYiLCJvZmZsaW5lX2FjY2VzcyIsImFkbWluIiwidW1hX2F1dGhvcml6YXRpb24iLCJ1c2VyIl0sInByZWZlcnJlZF91c2VybmFtZSI6InRlc3RhZG1pbiIsImdpdmVuX25hbWUiOiJ0ZXN0IiwiZmFtaWx5X25hbWUiOiJhZG1pbiIsImVtYWlsIjoidEBtYWlsLmNvbSJ9.a_92BpB681bEN8wVHIxp49axRkE1wBpZ8tPOSJ6gJQnDbaG9hwTfrOGUXsyf_PJRc9xPr6vXFp1gvm5vjMqq5eGMnK9UKsdUazQS_kzxhui5ZG_RrNFZ0zbRl-6SvkQqIRn2a7PEXjV1jX8VXWhIoJxUc0HhPONTPEkCCZU1BQsYzj6OnfpTZc1OYGcxBNYCxPoTjQLZGlgcUgCk8OR53fSdv4OguwKwXXsSJ3BoACaLLaFNSo-TLSM1kL4tzhnyCqqNnMf8ZSgkWHwZ9TjV88tsTkeszzWJDO1HapAcW8baR27OMHOJgEpj3XfFm-HrvppG1rJiV0eV2vLbP7y_1g",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": false,
+				"type": "boolean"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://traefik-hiku-test.polandcentral.cloudapp.azure.com/auth/realms/hiku-test/protocol/openid-connect/auth",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "hiku-web",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://traefik-hiku-test.polandcentral.cloudapp.azure.com/auth/realms/hiku-test/protocol/openid-connect/token",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "https://oauth.pstmn.io/v1/browser-callback",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "authorization_code_with_pkce",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://traefik-hiku-test.polandcentral.cloudapp.azure.com"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXVmo4V3U3SEtpLXBaZ25ibGh2M2EzaWFfWVlMd1k4SEVKZlM2UXVEa3ZNIn0.eyJleHAiOjE3NjgxMzMwMjcsImlhdCI6MTc2ODEzMjcyNywiYXV0aF90aW1lIjoxNzY4MTMyNzI2LCJqdGkiOiJkNGFmOWE1OS1kMTdjLTQxYmMtYTVlZC01ZTYzYzJkNmI2YmQiLCJpc3MiOiJodHRwczovL3RyYWVmaWstaGlrdS10ZXN0LnBvbGFuZGNlbnRyYWwuY2xvdWRhcHAuYXp1cmUuY29tL2F1dGgvcmVhbG1zL2hpa3UtdGVzdCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiZDkyN2QyYS00YWY2LTQ2MDItYWI3NC1jY2E4ZTEwNmYxZjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJoaWt1LXdlYiIsInNpZCI6IjQ5ZDY4Y2EyLWU1NTktNGJlMS04OGQ2LTdkYjdkMmVlMTNiYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9zdHdlYmhpa3V0ZXN0cGxjLnozNi53ZWIuY29yZS53aW5kb3dzLm5ldCIsImh0dHBzOi8vb2F1dGgucHN0bW4uaW8iLCIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1oaWt1LWRldiIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJ1c2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIG1pY3JvcHJvZmlsZS1qd3QiLCJ1cG4iOiJuaW5hIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoibmluYSBub3ZhayIsImdyb3VwcyI6WyJkZWZhdWx0LXJvbGVzLWhpa3UtZGV2Iiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXSwicHJlZmVycmVkX3VzZXJuYW1lIjoibmluYSIsImdpdmVuX25hbWUiOiJuaW5hIiwiZmFtaWx5X25hbWUiOiJub3ZhayIsImVtYWlsIjoibWFuY2F2YXZwb3RpY0BnbWFpbC5jb20ifQ.Qj43GaPExna7vDK5CCYQz5AqKL2t5pMEDekU5_o0WK3mOWhBW8u5kg4OeTf3siSF8Ckgf9c6AM0ZoUIe3H1rHHeBeTHMzhqFOqatR-4kKbDLDF-h0nP8ZTYRuxRbIPaoaCpHw6ZW1sEIv2xxhlDHVq4sfURtmpfAVNvPJXRIBm22QKHx6_VfzOLuoLlsVSi01jjJ9zKxzp4InprYJRqH7L9Oih_392thz3QXaY3zjQfNvm8Io-FkbCwgYichEWNY43cAxe8_6KbrkOpWVje0WxiIQQHcyRPZT8kqCqKnka1FPNXrZQr4hcGkqxSx6Ki56bWyzOc7Funr96ZCsUSJMg"
+		},
+		{
+			"key": "userId",
+			"value": "bd927d2a-4af6-4602-ab74-cca8e106f1f7"
+		},
+		{
+			"key": "followUserId",
+			"value": "8e93bfd1-3a0b-479a-a041-071b92be00ec"
+		}
+	]
+}
