@@ -26,7 +26,7 @@ spec:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: {{ include "social-feed-service.fullname" . }}-azure-kv
+              secretProviderClass: {{ include "trail-import-service.fullname" . }}-azure-kv
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
