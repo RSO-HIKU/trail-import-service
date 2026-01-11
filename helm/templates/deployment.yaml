@@ -19,6 +19,15 @@ spec:
       labels:
         {{- include "trail-import-service.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.azure.enabled }}
+      volumes:
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ include "social-feed-service.fullname" . }}-azure-kv
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -26,6 +35,10 @@ spec:
           ports:
             - containerPort: {{ .Values.service.clusterIP.port }}
           {{- if .Values.azure.enabled }}
+          volumeMounts:
+            - name: secrets-store
+              mountPath: /mnt/secrets-store
+              readOnly: true
           command:
             - sh
             - -c
