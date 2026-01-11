@@ -1,5 +1,6 @@
 package com.hiku.trailImport.controller;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,6 +13,7 @@ import com.hiku.trailImport.service.GpxImportService;
 
 
 @Path("/importGPX")
+@RolesAllowed("admin")
 @Produces(MediaType.APPLICATION_JSON)
 public class ImportGPX {
     
