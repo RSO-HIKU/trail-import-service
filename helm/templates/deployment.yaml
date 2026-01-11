@@ -33,8 +33,8 @@ spec:
               set -eu
               
               # Read secrets from CSI mounted files 
-              export KUMULUZEE_DATASOURCES_DEFAULT_USERNAME=$(cat /mnt/secrets-store/social-feed-db-user)
-              export KUMULUZEE_DATASOURCES_DEFAULT_PASSWORD=$(cat /mnt/secrets-store/social-feed-db-password)
+              export KUMULUZEE_DATASOURCES_DEFAULT_USERNAME=$(cat /mnt/secrets-store/trail-import-db-user)
+              export KUMULUZEE_DATASOURCES_DEFAULT_PASSWORD=$(cat /mnt/secrets-store/trail-import-db-password)
               export DB_HOST=$(cat /mnt/secrets-store/pg-host)
               export KUMULUZEE_DATASOURCES_DEFAULT_CONNECTIONURL="jdbc:postgresql://${DB_HOST}:{{ .Values.azure.port }}/{{ .Values.azure.database }}?sslmode={{ .Values.azure.sslmode }}&currentSchema={{ .Values.database.schema }},public"
               
