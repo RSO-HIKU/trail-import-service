@@ -1,5 +1,6 @@
 package com.hiku.trailImport.controller;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -11,6 +12,7 @@ import javax.ws.rs.core.Response;
 import com.hiku.trailImport.service.PeakImportService;
 
 @Path("/peak")
+@RolesAllowed("admin")
 @Produces(MediaType.APPLICATION_JSON)
 public class ImportPeak {
 
